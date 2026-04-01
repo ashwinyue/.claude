@@ -27,7 +27,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 scripts/review_skills.py",
+            "command": "cd /Users/mervyn/GolandProjects/github/hermes-agent2 && python3 .claude/scripts/review_skills.py",
             "statusMessage": "Running skill self-review"
           }
         ]
