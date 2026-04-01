@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "hooks": {
+    "TaskCompleted": [
+      {
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "Review the task you just completed. The self-improving skill is available under .claude/skills/self-improving/ if you need guidance. If the task involved non-trivial problem solving, trial and error, a reusable workflow, or a new pattern, save it as a skill under this project's .claude/skills/ (or ~/.claude/skills/ if broadly applicable). If nothing stands out, say 'Nothing to save.' and stop.",
+            "once": false
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 .claude/scripts/review_skills.py",
+            "statusMessage": "Running skill self-review"
+          }
+        ]
+      }
+    ]
+  }
+}

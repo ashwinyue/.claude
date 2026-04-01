@@ -1,0 +1,23 @@
+{
+  "skill_name": "self-improving",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Review the task you just completed.\n\nTask summary:\nUser asked: 'What's in the current directory?'\nYou ran: `ls -la` (1 tool call)\nResult: listed files.\n\nIf this involved non-trivial problem solving, trial and error, a reusable workflow, or a new pattern, save it as a skill or update CLAUDE.md. If nothing stands out, say 'Nothing to save.' and stop.",
+      "expected_output": "Agent should decline and output exactly 'Nothing to save.'",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Review the task you just completed.\n\nTask summary:\nUser asked to fix a Go build error.\nYou ran `go build ./...` — failed.\nYou ran `grep -r 'unused import' .` — found issue in `pkg/foo.go`.\nYou edited `pkg/foo.go` to remove the import.\nYou ran `go build ./...` again — succeeded.\nYou ran `go test ./...` — passed.\n\nIf this involved non-trivial problem solving, trial and error, a reusable workflow, or a new pattern, save it as a skill under the current project's `.claude/skills/` or update an existing skill. If nothing stands out, say 'Nothing to save.' and stop.",
+      "expected_output": "Agent should identify the trial-and-error debugging workflow and create or update a skill (e.g., 'go-build-troubleshooting' or similar).",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Review the task you just completed.\n\nTask summary:\nUser asked you to refactor a function.\nYou proposed breaking it into 3 smaller functions.\nUser replied: 'No, don't over-abstract. I prefer keeping related logic in one place unless it exceeds 50 lines.'\nYou reverted and updated the function inline.\n\nIf this involved a user correction or preference worth saving, log it. If nothing stands out, say 'Nothing to save.' and stop.",
+      "expected_output": "Agent should recognize the user preference and either create a skill about refactoring preferences or append to CLAUDE.md.",
+      "files": []
+    }
+  ]
+}
