@@ -6,8 +6,18 @@
         "hooks": [
           {
             "type": "prompt",
-            "prompt": "Review the task you just completed. The self-improving skill is available under .claude/skills/self-improving/ if you need guidance. If the task involved non-trivial problem solving, trial and error, a reusable workflow, or a new pattern, save it as a skill under this project's .claude/skills/ (or ~/.claude/skills/ if broadly applicable). If nothing stands out, say 'Nothing to save.' and stop.",
+            "prompt": "TASK COMPLETION REVIEW — You MUST evaluate whether the just-finished task contains reusable knowledge worth saving.\n\nAutomatically review if ANY of the following are true (do NOT skip):\n- 2 or more tool calls were used (Read/Edit/Bash/Grep/Write/etc.)\n- A command failed and had to be retried or fixed\n- The user corrected you or stated a preference ('I prefer...', 'Always do...', 'Never do...')\n- You discovered a gotcha, workflow, or best practice specific to this codebase\n- You explained a non-trivial procedure or sequence of steps\n\nIf ANY apply, read .claude/skills/ and ~/.claude/skills/ to check for existing skills before creating. Then either:\n1. Create/update a skill (.claude/skills/ for repo-specific, ~/.claude/skills/ for cross-project)\n2. Append to ~/.claude/CLAUDE.md for behavioral/architectural insights\n\nOnly reply 'Nothing to save.' if the task was truly trivial (single tool call, no errors, no patterns, no corrections).",
             "once": false
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 scripts/pending_review_prompt.py"
           }
         ]
       }
@@ -17,7 +27,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 .claude/scripts/review_skills.py",
+            "command": "python3 scripts/review_skills.py",
             "statusMessage": "Running skill self-review"
           }
         ]

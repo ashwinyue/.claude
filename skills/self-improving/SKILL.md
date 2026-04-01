@@ -9,10 +9,11 @@ description: "Triggered after task completion to review whether the just-finishe
 
 You have been prompted to review a recently completed task. Before doing anything, evaluate whether the task meets **at least one** of these thresholds:
 
-1. **Non-trivial tooling** — The task required 3 or more tool calls (e.g., multiple Read/Edit/Bash/Grep interactions).
+1. **Non-trivial tooling** — The task required 2 or more tool calls (e.g., Read/Edit/Bash/Grep interactions).
 2. **Trial and error** — A command failed, a build broke, an assumption was wrong, and you had to retry or change course.
 3. **New pattern discovered** — You found a gotcha, best practice, or workflow specific to this codebase or user's stack.
 4. **User correction or preference** — The user said "No, that's wrong...", "Actually...", "I prefer...", "Always do...", or "Never do...".
+5. **Non-trivial explanation** — You explained a procedure, sequence of steps, or decision tree.
 
 If **none** apply, reply with exactly:
 
@@ -35,6 +36,91 @@ If you decide to act, choose **exactly one** of the following paths:
 | A skill already exists that covers this topic but is outdated or incomplete | Patch the existing skill's `SKILL.md` |
 
 Prefer **patching an existing skill** over creating a new one. Check the current project's `.claude/skills/` and `~/.claude/skills/` directories before deciding to create.
+
+---
+
+## Learning Signals
+
+Use the signals below to decide what is worth saving.
+
+### High-Value Signals (save immediately)
+
+| Signal | Example | Where to save |
+|--------|---------|---------------|
+| Explicit correction | "No, do X instead" | Skill patch or CLAUDE.md |
+| Reusable preference | "Always do X for me" | CLAUDE.md |
+| Scoped pattern | "For this project, use..." | Project-local skill |
+| Trial-and-error fix | Build broke, had to change approach | Skill (debugging pattern) |
+| New gotcha discovered | Unexpected behavior in this stack | Skill or CLAUDE.md |
+
+### Medium-Value Signals (save tentatively)
+
+| Signal | Action |
+|--------|--------|
+| Same instruction repeated across sessions | Create or update a skill |
+| User edited your output | Evaluate if it reveals a reusable pattern |
+| Non-trivial sequence worked well | Document as a skill procedure |
+
+### Ignore (do not save)
+
+- One-time instructions ("do X now")
+- Context-only directives ("in this file...")
+- Hypotheticals ("what if...")
+- Silence or lack of feedback (never infer from silence)
+- Third-party preferences ("John likes...")
+
+---
+
+## Self-Reflection
+
+After completing significant work, pause and evaluate:
+
+1. **Did it meet expectations?** — Compare outcome vs intent
+2. **What could be better?** — Identify improvements for next time
+3. **Is this a pattern?** — If yes, consider saving it
+
+**Log format for mental review (do not create a separate file):**
+
+```
+CONTEXT: [type of task]
+REFLECTION: [what I noticed]
+LESSON: [what to do differently]
+```
+
+**Example:**
+```
+CONTEXT: Building Flutter UI
+REFLECTION: Spacing looked off, had to redo
+LESSON: Check visual spacing before showing user
+```
+
+---
+
+## Security Boundaries
+
+Never save the following into skills or CLAUDE.md:
+
+| Category | Examples |
+|----------|----------|
+| Credentials | Passwords, API keys, tokens, SSH keys |
+| Financial | Card numbers, bank accounts, crypto seeds |
+| Medical | Diagnoses, medications, conditions |
+| Personal location | Home/work addresses, routines |
+| Third-party info | Information about other people |
+| Access patterns | What systems the user has access to |
+
+**Red flags:** If you find yourself storing something "just in case it's useful later," inferring sensitive info from non-sensitive data, or building a psychological profile, STOP.
+
+---
+
+## Common Traps
+
+| Trap | Why It Fails | Better Move |
+|------|--------------|-------------|
+| Learning from silence | Creates false rules | Wait for explicit correction or repeated evidence |
+| Promoting too fast | Pollutes reusable memory | Keep new lessons tentative until validated |
+| Over-generalizing | Single-instance rules break later | Wait for 2–3 repetitions before codifying |
+| Storing secrets in skills | Security risk | Use env vars; keep skills generic |
 
 ---
 
@@ -96,6 +182,7 @@ If the change is large (more than ~30% of the file), use `Write` to rewrite the 
 ## Promoting to CLAUDE.md
 
 If the insight is about:
+
 - How this user wants you to behave (style, tone, workflow)
 - Cross-project architectural principles
 - Tool preferences that apply everywhere
