@@ -31,11 +31,11 @@ If you decide to act, choose **exactly one** of the following paths:
 
 | Situation | Action |
 |-----------|--------|
-| Reusable workflow / command sequence / debugging procedure for this repo | Create or update a skill under `~/.claude/skills/` (or the current project's `.claude/skills/`) |
+| Reusable workflow / command sequence / debugging procedure for this repo | **Create or update a skill under current project's `.claude/skills/`** (project-level only) |
 | Broadly applicable behavioral or architectural insight (cross-repo, cross-project) | Append or update `~/.claude/CLAUDE.md` |
 | A skill already exists that covers this topic but is outdated or incomplete | Patch the existing skill's `SKILL.md` |
 
-Prefer **patching an existing skill** over creating a new one. Check the current project's `.claude/skills/` and `~/.claude/skills/` directories before deciding to create.
+Prefer **patching an existing skill** over creating a new one. Check the current project's `.claude/skills/` directory first.
 
 ---
 
@@ -159,11 +159,11 @@ metadata:
 - `SKILL.md` body: keep it under 500 lines, under 100,000 characters
 - Supporting files can go in `references/`, `templates/`, `scripts/`, `assets/`
 
-### Storage Location Priority
-1. Current project's `.claude/skills/<name>/SKILL.md` — for repo-specific learnings
-2. `~/.claude/skills/<name>/SKILL.md` — for cross-project reusable skills
+### Storage Location
 
-Use the current project's `.claude/skills/` when the learning is tightly coupled to this codebase.
+**All skills MUST be saved to the current project's `.claude/skills/<name>/SKILL.md`** (project-level only).
+
+> Note: This project's skill system only supports project-level skills, not global skills.
 
 ---
 
@@ -197,11 +197,11 @@ When you decide to save something, you MUST use file tools. Do not just describe
 
 ### Creating a new skill
 
-**必须使用 `skill-creator` skill 来创建新 skill**，以确保标准化格式：
+**MUST use `skill-creator` skill to create new skills** for standardized format:
 
-1. Pick the storage location (project-local `.claude/skills/` for repo-specific; `~/.claude/skills/` for reusable).
-2. **调用 `Skill` 工具，使用 `skill-creator`**，传入 skill 名称、描述和内容。
-3. 如果 `skill-creator` 不可用，再回退到直接写文件的方式。
+1. **Storage location**: MUST save to current project's `.claude/skills/` directory (project-level skill).
+2. **Invoke `Skill` tool with `skill-creator`**, passing skill name, description, and content, with project-level path.
+3. If `skill-creator` is unavailable, manually create file at `./.claude/skills/<name>/SKILL.md`.
 4. Reply with `Created skill: <name>`.
 
 ### Patching an existing skill
