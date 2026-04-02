@@ -196,9 +196,12 @@ Then append it to `~/.claude/CLAUDE.md` under an appropriate heading, or create 
 When you decide to save something, you MUST use file tools. Do not just describe what you would do — do it.
 
 ### Creating a new skill
+
+**必须使用 `skill-creator` skill 来创建新 skill**，以确保标准化格式：
+
 1. Pick the storage location (project-local `.claude/skills/` for repo-specific; `~/.claude/skills/` for reusable).
-2. Use `Bash` to create the directory: `mkdir -p <path>/<name>`.
-3. Use `Write` to create `<path>/<name>/SKILL.md` with valid frontmatter and body.
+2. **调用 `Skill` 工具，使用 `skill-creator`**，传入 skill 名称、描述和内容。
+3. 如果 `skill-creator` 不可用，再回退到直接写文件的方式。
 4. Reply with `Created skill: <name>`.
 
 ### Patching an existing skill
